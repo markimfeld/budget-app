@@ -1,0 +1,30 @@
+{
+  "name": "budget-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon .\\src\\app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markimfeld/budget-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markimfeld/budget-app/issues"
+  },
+  "homepage": "https://github.com/markimfeld/budget-app#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.0"
+  },
+  "devDependencies": {
+    "colors": "^1.4.0",
+    "nodemon": "^2.0.19"
+  },
+  "type": "module"
+}

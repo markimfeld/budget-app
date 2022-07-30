@@ -28,7 +28,7 @@ const expensesController = {
     });
   },
   store: async (req, res) => {
-    if (!req.body.name || !req.body.amount || !req.body.budgetId) {
+    if (!req.body.name || !req.body.amount || !req.body.budget) {
       return res.status(400).json({
         status: 400,
         isStored: false,

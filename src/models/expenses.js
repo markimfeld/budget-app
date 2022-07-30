@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+const { Schema, SchemaTypes, model } = mongoose;
 
 const expenseSchema = new Schema({
   name: {
@@ -10,8 +10,9 @@ const expenseSchema = new Schema({
     type: Number,
     required: true,
   },
-  budgetId: {
-    type: String,
+  budget: {
+    type: SchemaTypes.ObjectId,
+    ref: "budget",
     required: true,
   },
   description: {
@@ -19,7 +20,12 @@ const expenseSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date(),
+    inmutable: true,
+    default: () => new Date(),
+  },
+  updatedAt: {
+    type: Date,
+    default: () => new Date(),
   },
   deletedAt: {
     type: Date,

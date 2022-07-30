@@ -4,6 +4,7 @@ import colors from "colors";
 
 // import routes
 import budgetsRouter from "./routes/budgets.js";
+import expensesRouter from "./routes/expenses.js";
 
 // DB Connection
 mongoose
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // route middleware
 app.use("/api/v1/budgets", budgetsRouter);
+app.use("/api/v1/expenses", expensesRouter);
 
 // app server listening
 

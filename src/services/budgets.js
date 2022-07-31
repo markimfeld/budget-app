@@ -37,6 +37,7 @@ export const budgetsService = {
   },
   update: (id, newBudgetData) => {
     try {
+      newBudgetData.updatedAt = new Date();
       return Budget.updateOne({ _id: id }, { $set: newBudgetData });
     } catch (error) {
       return error;

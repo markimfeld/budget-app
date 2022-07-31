@@ -3,12 +3,12 @@ import Expense from "../models/expenses.js";
 export const expensesService = {
   getAll: (options) => {
     try {
-      return Expense.find({ ...options });
+      return Expense.find({ ...options }).populate("budget");
     } catch (error) {}
   },
   getOne: (options) => {
     try {
-      return Expense.findOne({ ...options });
+      return Expense.findOne({ ...options }).populate("budget");
     } catch (error) {
       return error;
     }
@@ -35,6 +35,7 @@ export const expensesService = {
   },
   update: (id, newExpenseData) => {
     try {
+      newExpenseData.updatedAt = new Date();
       return Expense.updateOne({ _id: id }, { $set: newExpenseData });
     } catch (error) {
       return error;

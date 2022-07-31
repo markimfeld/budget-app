@@ -1,4 +1,5 @@
 import { expensesService } from "../services/expenses.js";
+import { budgetsService } from "../services/budgets.js";
 
 const expensesController = {
   getAll: async (req, res) => {
@@ -36,7 +37,11 @@ const expensesController = {
       });
     }
 
+    const budget = await budgetsService.getOne({ _id: req.body.budget });
+
     const newExpense = await expensesService.store(req.body);
+
+    console.log(budget);
 
     return res.status(201).json({
       status: 201,

@@ -41,7 +41,11 @@ const expensesController = {
 
     const newExpense = await expensesService.store(req.body);
 
-    console.log(budget);
+    budget.spentAmount += newExpense.amount;
+
+    const budgetToUpdate = { ...budget };
+
+    await budgetsService.update(budget.id, budgetToUpdate);
 
     return res.status(201).json({
       status: 201,

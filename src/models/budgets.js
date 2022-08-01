@@ -12,6 +12,7 @@ const budgetSchema = new Schema({
   },
   spentAmount: {
     type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,

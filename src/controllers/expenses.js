@@ -89,6 +89,18 @@ const expensesController = {
 
     const expenseUpdated = await expensesService.update(id, newExpenseData);
 
+    if (expenseUpdated.modifiedCount === 1 && oldExpense) {
+      const budget = await budgetsService.getOne({
+        _id: oldExpense._doc.budget._id,
+      });
+      budget.spentAmount -= oldExpense.amount;
+      budget.spentAmount += newExpenseData.amount;
+
+      const budgetToUpdate = { ...budget };
+
+      await budgetsService.update(budget.id, budgetToUpdate);
+    }
+
     return res.status(200).json({
       status: 200,
       isUpdate: true,

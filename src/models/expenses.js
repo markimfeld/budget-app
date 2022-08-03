@@ -30,6 +30,10 @@ const expenseSchema = new Schema({
   deletedAt: {
     type: Date,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Expense = model("expense", expenseSchema);

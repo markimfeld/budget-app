@@ -28,6 +28,7 @@ export const budgetsService = {
         id,
         {
           deletedAt: new Date(),
+          isDeleted: true,
         },
         { new: true }
       );

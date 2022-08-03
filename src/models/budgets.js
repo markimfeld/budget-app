@@ -14,6 +14,9 @@ const budgetSchema = new Schema({
     type: Number,
     default: 0,
   },
+  leftAmount: {
+    type: Number,
+  },
   createdAt: {
     type: Date,
     inmutable: true,
@@ -26,6 +29,15 @@ const budgetSchema = new Schema({
   deletedAt: {
     type: Date,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+budgetSchema.pre("save", function (next) {
+  this.leftAmount = this.expectedAmount;
+  next();
 });
 
 const Budget = model("budget", budgetSchema);

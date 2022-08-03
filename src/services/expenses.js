@@ -26,6 +26,7 @@ export const expensesService = {
         id,
         {
           deletedAt: new Date(),
+          isDeleted: true,
         },
         { new: true }
       );

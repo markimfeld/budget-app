@@ -42,6 +42,8 @@ const expensesController = {
     const newExpense = await expensesService.store(req.body);
 
     budget.spentAmount += newExpense.amount;
+    budget.leftAmount = budget.expectedAmount - budget.spentAmount;
+    budget.updatedAt = new Date();
 
     const budgetToUpdate = { ...budget };
 
@@ -56,15 +58,29 @@ const expensesController = {
   delete: async (req, res) => {
     const { id } = req.params;
 
-    const expenseDeleted = await expensesService.delete({ _id: id });
+    const expenseToDelete = await expensesService.getOne({ _id: id });
 
-    if (!expenseDeleted) {
+    if (!expenseToDelete) {
       return res.status(404).json({
         status: 404,
-        isDeleted: false,
+        isUpdated: false,
         message: `The expense trying to delete with ID ${id} is notFound`,
       });
     }
+
+    const budget = await budgetsService.getOne({
+      _id: expenseToDelete.budget._id,
+    });
+
+    const expenseDeleted = await expensesService.delete({ _id: id });
+
+    budget.spentAmount -= expenseDeleted.amount;
+    budget.leftAmount += expenseDeleted.amount;
+    budget.updatedAt = new Date();
+
+    const budgetToUpdate = { ...budget };
+
+    await budgetsService.update(budget.id, budgetToUpdate);
 
     return res.status(200).json({
       status: 200,
@@ -89,12 +105,22 @@ const expensesController = {
 
     const expenseUpdated = await expensesService.update(id, newExpenseData);
 
-    if (expenseUpdated.modifiedCount === 1 && oldExpense) {
+    if (
+      req.body?.amount &&
+      newExpenseData.amount !== oldExpense &&
+      expenseUpdated.modifiedCount === 1 &&
+      oldExpense
+    ) {
       const budget = await budgetsService.getOne({
         _id: oldExpense._doc.budget._id,
       });
       budget.spentAmount -= oldExpense.amount;
       budget.spentAmount += newExpenseData.amount;
+
+      budget.leftAmount += oldExpense.amount;
+      budget.leftAmount = budget.expectedAmount - budget.spentAmount;
+
+      budget.updatedAt = new Date();
 
       const budgetToUpdate = { ...budget };
 

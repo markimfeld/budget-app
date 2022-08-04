@@ -119,7 +119,6 @@ const expensesController = {
 
       budget.leftAmount += oldExpense.amount;
       budget.leftAmount = budget.expectedAmount - budget.spentAmount;
-
       budget.updatedAt = new Date();
 
       const budgetToUpdate = { ...budget };

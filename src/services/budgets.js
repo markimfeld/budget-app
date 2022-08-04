@@ -38,8 +38,8 @@ export const budgetsService = {
   },
   update: (id, newBudgetData) => {
     try {
-      newBudgetData.updatedAt = new Date();
-      return Budget.updateOne({ _id: id }, { $set: newBudgetData });
+      newBudgetData.updatedAt = Date.now();
+      return Budget.findByIdAndUpdate(id, newBudgetData, { new: true });
     } catch (error) {
       return error;
     }

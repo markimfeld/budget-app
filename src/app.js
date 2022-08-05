@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import colors from "colors";
+import dotenv from "dotenv";
+dotenv.config();
 
 // import routes
 import budgetsRouter from "./routes/budgets.js";
@@ -17,17 +20,18 @@ mongoose
 // app instance
 const app = express();
 
-// middlewares
-
+// para capturar el body
 // json middleware
-app.use(express.json());
+// app.use(express.json()); -> una opción sin body-parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // route middleware
 app.use("/api/v1/budgets", budgetsRouter);
 app.use("/api/v1/expenses", expensesRouter);
 
 // app server listening
-
-app.listen(3000, () =>
-  console.log(colors.rainbow("Server is running on port 3000"))
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(colors.rainbow(`Server is running on port ${PORT}`))
 );

@@ -2,21 +2,23 @@ import { Router } from "express";
 
 import budgetsController from "../controllers/budgets.js";
 
+import verifyToken from "../middlewares/validate-token.js";
+
 const budgetsRouter = Router();
 
 // GET - http://localhost:3000/api/v1/budgets/
-budgetsRouter.get("/", budgetsController.getAll);
+budgetsRouter.get("/", verifyToken, budgetsController.getAll);
 
 // GET - http://localhost:3000/api/v1/budgets/:id
-budgetsRouter.get("/:id", budgetsController.getOne);
+budgetsRouter.get("/:id", verifyToken, budgetsController.getOne);
 
 // POST - http://localhost:3000/api/v1/budgets/
-budgetsRouter.post("/", budgetsController.store);
+budgetsRouter.post("/", verifyToken, budgetsController.store);
 
 // PUT - http://localhost:3000/api/v1/budgets/:id
-budgetsRouter.put("/:id", budgetsController.update);
+budgetsRouter.put("/:id", verifyToken, budgetsController.update);
 
 // DELETE - http://localhost:3000/api/v1/budgets/:id
-budgetsRouter.delete("/:id", budgetsController.delete);
+budgetsRouter.delete("/:id", verifyToken, budgetsController.delete);
 
 export default budgetsRouter;

@@ -19,13 +19,14 @@ const usersController = {
     }
 
     // dos partes: payload y el secret token
+    // aca generamos el token
     const token = jwt.sign(
       {
         name: user.firstName + " " + user.lastName,
         id: user._id,
       },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1m" }
+      { expiresIn: "1h" }
     );
 
     return res.status(200).header("auth-token", token).json({

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+const { Schema, SchemaTypes, model } = mongoose;
 
 const budgetSchema = new Schema({
   name: {
@@ -32,6 +32,16 @@ const budgetSchema = new Schema({
   isDeleted: {
     type: Boolean,
     default: false,
+  },
+  createdBy: {
+    type: SchemaTypes.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  updatedBy: {
+    type: SchemaTypes.ObjectId,
+    ref: "user",
+    required: true,
   },
 });
 

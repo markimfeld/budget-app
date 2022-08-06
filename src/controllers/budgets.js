@@ -36,7 +36,12 @@ const budgetsController = {
       });
     }
 
-    const budgetStored = await budgetsService.store(req.body);
+    // capturamos el user para guardar en el budgets
+    const budgetToStore = { ...req.body };
+    budgetToStore.createdBy = req.user.id;
+    budgetToStore.updatedBy = req.user.id;
+
+    const budgetStored = await budgetsService.store(budgetToStore);
 
     return res.status(201).json({
       status: 201,

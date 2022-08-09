@@ -34,10 +34,15 @@ export const expensesService = {
       return error;
     }
   },
-  update: (id, newExpenseData) => {
+  update: async (id, newExpenseData) => {
     try {
-      newExpenseData.updatedAt = new Date();
-      return Expense.updateOne({ _id: id }, { $set: newExpenseData });
+      const expense = await Expense.findOne({ _id: id });
+      expense.name = newExpenseData.name;
+      expense.amount = newExpenseData.amount;
+      expense.description = newExpenseData.description;
+      expense.budget = newExpenseData.budget;
+
+      return await expense.save();
     } catch (error) {
       return error;
     }

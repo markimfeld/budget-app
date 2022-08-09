@@ -3,6 +3,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const usersController = {
+  getAll: async (req, res) => {
+    const users = await userService.getAll({});
+
+    return res.status(200).json({
+      status: 200,
+      total: users.length,
+      data: users,
+    });
+  },
   login: async (req, res) => {
     const user = await userService.getOne({ email: req.body.email });
 
@@ -26,7 +35,7 @@ const usersController = {
         id: user._id,
       },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
 
     return res.status(200).header("auth-token", token).json({

@@ -43,11 +43,8 @@ const expensesController = {
 
     budget.spentAmount += newExpense.amount;
     budget.leftAmount = budget.expectedAmount - budget.spentAmount;
-    budget.updatedAt = new Date();
 
-    const budgetToUpdate = { ...budget };
-
-    await budgetsService.update(budget.id, budgetToUpdate);
+    await budgetsService.update(budget.id, budget);
 
     return res.status(201).json({
       status: 201,
@@ -76,7 +73,7 @@ const expensesController = {
 
     budget.spentAmount -= expenseDeleted.amount;
     budget.leftAmount += expenseDeleted.amount;
-    budget.updatedAt = new Date();
+    // budget.updatedAt = new Date();
 
     const budgetToUpdate = { ...budget };
 
@@ -119,11 +116,8 @@ const expensesController = {
 
       budget.leftAmount += oldExpense.amount;
       budget.leftAmount = budget.expectedAmount - budget.spentAmount;
-      budget.updatedAt = new Date();
 
-      const budgetToUpdate = { ...budget };
-
-      await budgetsService.update(budget.id, budgetToUpdate);
+      await budgetsService.update(budget.id, budget);
     }
 
     return res.status(200).json({

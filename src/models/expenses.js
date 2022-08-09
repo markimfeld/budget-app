@@ -36,6 +36,11 @@ const expenseSchema = new Schema({
   },
 });
 
+expenseSchema.pre("save", function (next) {
+  this.updatedAt = new Date();
+  next();
+});
+
 const Expense = model("expense", expenseSchema);
 
 export default Expense;

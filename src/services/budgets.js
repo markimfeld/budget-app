@@ -36,10 +36,15 @@ export const budgetsService = {
       return error;
     }
   },
-  update: (id, newBudgetData) => {
+  update: async (id, newBudgetData) => {
     try {
-      newBudgetData.updatedAt = Date.now();
-      return Budget.findByIdAndUpdate(id, newBudgetData, { new: true });
+      const budget = await Budget.findOne({ _id: id });
+      budget.name = newBudgetData.name;
+      budget.expectedAmount = newBudgetData.expectedAmount;
+      budget.leftAmount = newBudgetData.leftAmount;
+      budget.spentAmount = newBudgetData.spentAmount;
+
+      return await budget.save();
     } catch (error) {
       return error;
     }

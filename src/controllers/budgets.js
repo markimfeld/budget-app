@@ -40,6 +40,7 @@ const budgetsController = {
     const budgetToStore = { ...req.body };
     budgetToStore.createdBy = req.user.id;
     budgetToStore.updatedBy = req.user.id;
+    budgetToStore.leftAmount = req.body.expectedAmount;
 
     const budgetStored = await budgetsService.store(budgetToStore);
 

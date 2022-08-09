@@ -46,7 +46,7 @@ const budgetSchema = new Schema({
 });
 
 budgetSchema.pre("save", function (next) {
-  this.leftAmount = this.expectedAmount;
+  this.updatedAt = new Date();
   next();
 });
 

@@ -1,4 +1,4 @@
 # Budget App
 
 TODOS: 
-- [] test all services
+- [ ] test all services

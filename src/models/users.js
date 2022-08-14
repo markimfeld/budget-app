@@ -49,6 +49,11 @@ const userSchema = new Schema({
   },
 });
 
+userSchema.pre("save", function (next) {
+  console.log("saving");
+  next();
+});
+
 const User = model("user", userSchema);
 
 export default User;

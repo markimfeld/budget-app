@@ -39,10 +39,10 @@ export const budgetsService = {
   update: async (id, newBudgetData) => {
     try {
       const budget = await Budget.findOne({ _id: id });
-      budget.name = newBudgetData.name;
-      budget.expectedAmount = newBudgetData.expectedAmount;
-      budget.leftAmount = newBudgetData.leftAmount;
-      budget.spentAmount = newBudgetData.spentAmount;
+      budget.name = newBudgetData?.name;
+      budget.expectedAmount = newBudgetData?.expectedAmount;
+      budget.leftAmount = newBudgetData?.leftAmount;
+      budget.spentAmount = newBudgetData?.spentAmount;
 
       return await budget.save();
     } catch (error) {

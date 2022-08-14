@@ -15,9 +15,16 @@ export const userService = {
       return error;
     }
   },
-  store: (newUser) => {
+  store: async (newUser) => {
     try {
-      return User.create(newUser);
+      const anUser = new User();
+      anUser.firstName = newUser.firstName;
+      anUser.lastName = newUser.lastName;
+      anUser.username = newUser.username;
+      anUser.password = newUser.password;
+      anUser.email = newUser.email;
+
+      return await anUser.save();
     } catch (error) {
       return error;
     }

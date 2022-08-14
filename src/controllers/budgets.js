@@ -84,6 +84,49 @@ const budgetsController = {
 
     const newBudgetData = { ...oldBudget._doc, ...req.body };
 
+    // Tests
+    // when update expectedAmount then update leftAmount
+    // if spentAount is greater than zero then leftAmount = expectedAmount - spentAmount
+
+    // TODO: fix this -> is not working
+    // if (
+    // oldBudget.expectedAmount !== req.body.expectedAmount &&
+    // oldBudget.spentAmount === 0 &&
+    // req.body.spentAmount === 0
+    // ) {
+    newBudgetData.leftAmount = req.body.expectedAmount; // ?? oldBudget.expectedAmount;
+    // }
+
+    if (
+      oldBudget.spentAmount > 0 &&
+      req.body.spentAmount > 0 &&
+      req.body.expectedAmount !== undefined &&
+      req.body.expectedAmount !== null
+    ) {
+      newBudgetData.leftAmount =
+        req.body.expectedAmount - oldBudget.spentAmount;
+      console.log("entro 1");
+    }
+
+    if (
+      req.body.spentAmount > 0 &&
+      req.body.expectedAmount !== undefined &&
+      req.body.expectedAmount !== null
+    ) {
+      newBudgetData.leftAmount = req.body.expectedAmount - req.body.spentAmount;
+      console.log("entro 2");
+    }
+
+    if (
+      req.body.spentAmount > 0 &&
+      (req.body.expectedAmount === undefined ||
+        req.body.expectedAmount === null)
+    ) {
+      newBudgetData.leftAmount =
+        oldBudget.expectedAmount - req.body.spentAmount;
+      console.log("entro 3");
+    }
+
     const budgetUpdated = await budgetsService.update(id, newBudgetData);
 
     return res.status(200).json({

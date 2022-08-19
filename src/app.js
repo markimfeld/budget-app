@@ -18,7 +18,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log(colors.bgCyan("DB Connection OK")))
+  .then(() => console.log("DB Connection OK"))
   .catch((error) => console.log("error db: ", error));
 
 // app instance
@@ -30,7 +30,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(morgan("tiny"));
+// app.use(morgan("tiny"));
 
 // route middleware
 app.use("/api/v1/budgets", budgetsRouter);
@@ -42,3 +42,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(colors.rainbow(`Server is running on port ${PORT}`))
 );
+
+export default app;

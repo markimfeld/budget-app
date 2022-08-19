@@ -1,4 +1,6 @@
 import { mongoose } from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -49,10 +51,21 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.pre("save", function (next) {
-  console.log("saving");
+userSchema.pre("save", async function (next) {
+  const jumps = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(this.password, jumps);
+
+  this.password = hash;
+
   next();
 });
+
+userSchema.methods.isValidPassword = async function (password) {
+  const user = this;
+  const compare = await bcrypt.compare(password, user.password);
+
+  return compare;
+};
 
 const User = model("user", userSchema);
 

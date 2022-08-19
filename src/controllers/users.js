@@ -15,14 +15,18 @@ const usersController = {
   login: async (req, res) => {
     const user = await userService.getOne({ email: req.body.email });
 
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    if (user === undefined || user === null) {
+      return res.status(404).json({
+        status: 404,
+        message: "Usuario no existe",
+      });
+    }
 
-    if (!validPassword) {
-      return res.status(401).json({
-        status: 401,
+    const isValidPassword = await user.isValidPassword(req.body.password);
+
+    if (!isValidPassword) {
+      return res.status(404).json({
+        status: 404,
         message: "Credenciales inválidas",
       });
     }
@@ -38,10 +42,14 @@ const usersController = {
       { expiresIn: "24h" }
     );
 
-    return res.status(200).header("auth-token", token).json({
-      status: 200,
-      message: "Welcome",
-    });
+    return res
+      .status(200)
+      .header("auth-token", token)
+      .json({
+        status: 200,
+        message: `Welcome ${user.firstName} ${user.lastName}`,
+        id: user._id,
+      });
   },
   store: async (req, res) => {
     if (
@@ -58,13 +66,7 @@ const usersController = {
       });
     }
 
-    const saltos = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, saltos);
-
-    const newUser = { ...req.body };
-    newUser.password = password;
-
-    const storedUser = await userService.store(newUser);
+    const storedUser = await userService.store({ ...req.body });
 
     return res.status(201).json({
       status: 201,

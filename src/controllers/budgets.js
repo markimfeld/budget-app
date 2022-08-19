@@ -42,6 +42,10 @@ const budgetsController = {
     budgetToStore.updatedBy = req.user.id;
     budgetToStore.leftAmount = req.body.expectedAmount;
 
+    if (req.body.spentAmount) {
+      budgetToStore.leftAmount = req.body.expectedAmount - req.body.spentAmount;
+    }
+
     const budgetStored = await budgetsService.store(budgetToStore);
 
     return res.status(201).json({
@@ -59,7 +63,7 @@ const budgetsController = {
       return res.status(404).json({
         status: 404,
         isDeleted: false,
-        message: `The budget trying to delete with ID ${id} is notFound`,
+        message: `notFound`,
       });
     }
 
@@ -78,24 +82,26 @@ const budgetsController = {
       return res.status(404).json({
         status: 404,
         isUpdated: false,
-        message: `The budget trying to update with ID ${id} is notFound`,
+        message: `Not found`,
       });
     }
 
     const newBudgetData = { ...oldBudget._doc, ...req.body };
 
-    // Tests
-    // when update expectedAmount then update leftAmount
-    // if spentAount is greater than zero then leftAmount = expectedAmount - spentAmount
+    newBudgetData.leftAmount = req.body.expectedAmount;
 
-    // TODO: fix this -> is not working
-    // if (
-    // oldBudget.expectedAmount !== req.body.expectedAmount &&
-    // oldBudget.spentAmount === 0 &&
-    // req.body.spentAmount === 0
-    // ) {
-    newBudgetData.leftAmount = req.body.expectedAmount; // ?? oldBudget.expectedAmount;
-    // }
+    if (req.body.spentAmount === 0 && !req.body.expectedAmount) {
+      newBudgetData.leftAmount = oldBudget.expectedAmount;
+    }
+
+    if (
+      req.body.expectedAmount &&
+      req.body.expectedAmount !== oldBudget.expectedAmount &&
+      (req.body.spentAmount === undefined || req.body.spentAmount === null)
+    ) {
+      newBudgetData.leftAmount =
+        req.body.expectedAmount - oldBudget.spentAmount;
+    }
 
     if (
       oldBudget.spentAmount > 0 &&
@@ -105,7 +111,6 @@ const budgetsController = {
     ) {
       newBudgetData.leftAmount =
         req.body.expectedAmount - oldBudget.spentAmount;
-      console.log("entro 1");
     }
 
     if (
@@ -114,7 +119,6 @@ const budgetsController = {
       req.body.expectedAmount !== null
     ) {
       newBudgetData.leftAmount = req.body.expectedAmount - req.body.spentAmount;
-      console.log("entro 2");
     }
 
     if (
@@ -124,7 +128,6 @@ const budgetsController = {
     ) {
       newBudgetData.leftAmount =
         oldBudget.expectedAmount - req.body.spentAmount;
-      console.log("entro 3");
     }
 
     const budgetUpdated = await budgetsService.update(id, newBudgetData);

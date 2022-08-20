@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Budget from "../src/models/budgets.js";
 
 // Require the dev-dependencies

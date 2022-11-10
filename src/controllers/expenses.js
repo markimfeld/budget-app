@@ -60,8 +60,8 @@ const expensesController = {
     if (!expenseToDelete) {
       return res.status(404).json({
         status: 404,
-        isUpdated: false,
-        message: `The expense trying to delete with ID ${id} is notFound`,
+        isDeleted: false,
+        message: `notFound`,
       });
     }
 
@@ -122,7 +122,7 @@ const expensesController = {
 
     return res.status(200).json({
       status: 200,
-      isUpdate: true,
+      isUpdated: true,
       data: expenseUpdated,
     });
   },

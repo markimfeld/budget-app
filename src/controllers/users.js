@@ -39,17 +39,20 @@ const usersController = {
         id: user._id,
       },
       process.env.TOKEN_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: "2h" }
     );
 
-    return res
-      .status(200)
-      .header("auth-token", token)
-      .json({
-        status: 200,
-        message: `Welcome ${user.firstName} ${user.lastName}`,
-        id: user._id,
-      });
+    const aUser = {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      accessToken: token,
+    };
+
+    return res.status(200).json({
+      status: 200,
+      user: aUser,
+    });
   },
   store: async (req, res) => {
     if (

@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import colors from "colors";
+import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
@@ -24,13 +25,15 @@ mongoose
 // app instance
 const app = express();
 
+app.use(cors());
+
 // para capturar el body
 // json middleware
 // app.use(express.json()); -> una opción sin body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// app.use(morgan("tiny"));
+app.use(morgan("tiny"));
 
 // route middleware
 app.use("/api/v1/budgets", budgetsRouter);

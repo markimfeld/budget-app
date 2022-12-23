@@ -39,7 +39,7 @@ const usersController = {
         id: user._id,
       },
       process.env.TOKEN_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "2h" }
     );
 
     const aUser = {

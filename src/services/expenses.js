@@ -3,7 +3,9 @@ import Expense from "../models/expenses.js";
 export const expensesService = {
   getAll: (options) => {
     try {
-      return Expense.find({ ...options }).populate("budget");
+      return Expense.find({ ...options })
+        .populate("budget")
+        .sort({ createdAt: -1 });
     } catch (error) {}
   },
   getOne: (options) => {

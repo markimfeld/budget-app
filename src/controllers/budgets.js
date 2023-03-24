@@ -2,7 +2,26 @@ import { budgetsService } from "../services/budgets.js";
 
 const budgetsController = {
   getAll: async (req, res) => {
-    const budgets = await budgetsService.getAll({});
+    console.log(req.query);
+
+    console.log(req.query.month);
+    console.log(req.query.year);
+
+    const currentMonth = req.query.month
+      ? req.query.month
+      : new Date().getMonth() + 1;
+    const currentYear = req.query.year
+      ? req.query.year
+      : new Date().getFullYear();
+
+    const budgets = await budgetsService.getAll({
+      $expr: {
+        $and: [
+          { $eq: [{ $year: "$createdAt" }, currentYear] },
+          { $eq: [{ $month: "$createdAt" }, currentMonth] },
+        ],
+      },
+    });
 
     return res.status(200).json({
       status: 200,

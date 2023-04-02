@@ -2,11 +2,6 @@ import { budgetsService } from "../services/budgets.js";
 
 const budgetsController = {
   getAll: async (req, res) => {
-    console.log(req.query);
-
-    console.log(req.query.month);
-    console.log(req.query.year);
-
     const currentMonth = req.query.month
       ? req.query.month
       : new Date().getMonth() + 1;
@@ -19,6 +14,7 @@ const budgetsController = {
         $and: [
           { $eq: [{ $year: "$createdAt" }, currentYear] },
           { $eq: [{ $month: "$createdAt" }, currentMonth] },
+          { $eq: ["$isDeleted", false] },
         ],
       },
     });

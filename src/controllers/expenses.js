@@ -3,7 +3,9 @@ import { budgetsService } from "../services/budgets.js";
 
 const expensesController = {
   getAll: async (req, res) => {
-    const expenses = await expensesService.getAll({});
+    const expenses = await expensesService.getAll({
+      isDeleted: false,
+    });
 
     return res.status(200).json({
       status: 200,
@@ -54,6 +56,8 @@ const expensesController = {
   },
   delete: async (req, res) => {
     const { id } = req.params;
+
+    console.log(id);
 
     const expenseToDelete = await expensesService.getOne({ _id: id });
 

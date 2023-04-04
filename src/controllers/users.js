@@ -65,7 +65,25 @@ const usersController = {
       return res.status(400).json({
         status: 400,
         isStored: false,
-        message: `The firstName, lastName, username, password and email are required`,
+        message: `El nombre, apellido, usuario, email y constraseña son requeridos`,
+      });
+    }
+
+    if (req.body.password.length < 6) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: `La contraseña debe ser mayor a 6 caracteres`,
+      });
+    }
+
+    const alreadyExist = await userService.getOne({ email: req.body.email });
+
+    if (alreadyExist) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: `Ya existe un usuario con ese email`,
       });
     }
 

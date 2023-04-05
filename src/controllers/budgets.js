@@ -9,12 +9,15 @@ const budgetsController = {
       ? req.query.year
       : new Date().getFullYear();
 
+    const createdBy = req.query.createdBy;
+
     const budgets = await budgetsService.getAll({
       $expr: {
         $and: [
           { $eq: [{ $year: "$createdAt" }, currentYear] },
           { $eq: [{ $month: "$createdAt" }, currentMonth] },
           { $eq: ["$isDeleted", false] },
+          { $eq: ["$createdBy", createdBy] },
         ],
       },
     });

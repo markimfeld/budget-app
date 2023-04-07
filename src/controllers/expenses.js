@@ -39,14 +39,7 @@ const expensesController = {
       });
     }
 
-    const budget = await budgetsService.getOne({ _id: req.body.budget });
-
     const newExpense = await expensesService.store(req.body);
-
-    // budget.spentAmount += newExpense.amount;
-    // budget.leftAmount = budget.expectedAmount - budget.spentAmount;
-
-    // await budgetsService.update(budget.id, budget);
 
     return res.status(201).json({
       status: 201,
@@ -56,8 +49,6 @@ const expensesController = {
   },
   delete: async (req, res) => {
     const { id } = req.params;
-
-    console.log(id);
 
     const expenseToDelete = await expensesService.getOne({ _id: id });
 
@@ -69,19 +60,7 @@ const expensesController = {
       });
     }
 
-    const budget = await budgetsService.getOne({
-      _id: expenseToDelete.budget._id,
-    });
-
     const expenseDeleted = await expensesService.delete({ _id: id });
-
-    budget.spentAmount -= expenseDeleted.amount;
-    budget.leftAmount += expenseDeleted.amount;
-    // budget.updatedAt = new Date();
-
-    const budgetToUpdate = { ...budget };
-
-    await budgetsService.update(budget.id, budgetToUpdate);
 
     return res.status(200).json({
       status: 200,

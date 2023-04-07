@@ -106,51 +106,7 @@ const budgetsController = {
 
     const newBudgetData = { ...oldBudget._doc, ...req.body };
 
-    // newBudgetData.leftAmount = req.body.expectedAmount;
-
-    // if (req.body.spentAmount === 0 && !req.body.expectedAmount) {
-    //   newBudgetData.leftAmount = oldBudget.expectedAmount;
-    // }
-
-    // if (
-    //   req.body.expectedAmount &&
-    //   req.body.expectedAmount !== oldBudget.expectedAmount &&
-    //   (req.body.spentAmount === undefined || req.body.spentAmount === null)
-    // ) {
-    //   newBudgetData.leftAmount =
-    //     req.body.expectedAmount - oldBudget.spentAmount;
-    // }
-
-    // if (
-    //   oldBudget.spentAmount > 0 &&
-    //   req.body.spentAmount > 0 &&
-    //   req.body.expectedAmount !== undefined &&
-    //   req.body.expectedAmount !== null
-    // ) {
-    //   newBudgetData.leftAmount =
-    //     req.body.expectedAmount - oldBudget.spentAmount;
-    // }
-
-    // if (
-    //   req.body.spentAmount > 0 &&
-    //   req.body.expectedAmount !== undefined &&
-    //   req.body.expectedAmount !== null
-    // ) {
-    //   newBudgetData.leftAmount = req.body.expectedAmount - req.body.spentAmount;
-    // }
-
-    // if (
-    //   req.body.spentAmount > 0 &&
-    //   (req.body.expectedAmount === undefined ||
-    //     req.body.expectedAmount === null)
-    // ) {
-    //   newBudgetData.leftAmount =
-    //     oldBudget.expectedAmount - req.body.spentAmount;
-    // }
-
     const budgetUpdated = await budgetsService.update(id, newBudgetData);
-
-    console.log(budgetUpdated);
 
     return res.status(200).json({
       status: 200,

@@ -1,5 +1,4 @@
 import { userService } from "../services/users.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const usersController = {

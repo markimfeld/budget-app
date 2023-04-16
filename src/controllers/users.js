@@ -1,6 +1,14 @@
 import { userService } from "../services/users.js";
 import jwt from "jsonwebtoken";
 
+import {
+  NOT_FOUND,
+  INVALID_CREDENTIALS,
+  MISSING_FIELDS_REQUIRED,
+  INVALID_PASSWORD_LENGTH,
+  DUPLICATE_RECORD,
+} from "../labels/labels.js";
+
 const usersController = {
   getAll: async (req, res) => {
     const users = await userService.getAll({});
@@ -17,7 +25,7 @@ const usersController = {
     if (user === undefined || user === null) {
       return res.status(404).json({
         status: 404,
-        message: "Usuario no existe",
+        message: NOT_FOUND,
       });
     }
 
@@ -26,7 +34,7 @@ const usersController = {
     if (!isValidPassword) {
       return res.status(404).json({
         status: 404,
-        message: "Credenciales inválidas",
+        message: INVALID_CREDENTIALS,
       });
     }
 
@@ -64,7 +72,7 @@ const usersController = {
       return res.status(400).json({
         status: 400,
         isStored: false,
-        message: `El nombre, apellido, usuario, email y constraseña son requeridos`,
+        message: MISSING_FIELDS_REQUIRED,
       });
     }
 
@@ -72,7 +80,7 @@ const usersController = {
       return res.status(400).json({
         status: 400,
         isStored: false,
-        message: `La contraseña debe ser mayor a 6 caracteres`,
+        message: INVALID_PASSWORD_LENGTH,
       });
     }
 
@@ -82,7 +90,7 @@ const usersController = {
       return res.status(400).json({
         status: 400,
         isStored: false,
-        message: `Ya existe un usuario con ese email`,
+        message: DUPLICATE_RECORD,
       });
     }
 

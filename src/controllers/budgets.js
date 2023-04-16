@@ -1,4 +1,5 @@
 import { budgetsService } from "../services/budgets.js";
+import { MISSING_FIELDS_REQUIRED, NOT_FOUND } from "../labels/labels.js";
 
 const budgetsController = {
   getAll: async (req, res) => {
@@ -36,7 +37,7 @@ const budgetsController = {
     if (!budget) {
       return res.status(404).json({
         status: 404,
-        message: `The budget with ID ${id} is notFound`,
+        message: NOT_FOUND,
       });
     }
 
@@ -50,7 +51,7 @@ const budgetsController = {
       return res.status(400).json({
         status: 400,
         isStored: false,
-        message: "The name and expectedAmount are required",
+        message: MISSING_FIELDS_REQUIRED,
       });
     }
 
@@ -81,7 +82,7 @@ const budgetsController = {
       return res.status(404).json({
         status: 404,
         isDeleted: false,
-        message: `notFound`,
+        message: NOT_FOUND,
       });
     }
 
@@ -100,7 +101,7 @@ const budgetsController = {
       return res.status(404).json({
         status: 404,
         isUpdated: false,
-        message: `Not found`,
+        message: NOT_FOUND,
       });
     }
 

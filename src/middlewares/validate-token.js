@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
 
+import { ACCESS_DENIED, INVALID_TOKEN } from "../labels/labels.js";
+
 const verifyToken = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
     return res.status(401).json({
       status: 401,
-      message: "Acceso denegado",
+      message: ACCESS_DENIED,
     });
   }
 
@@ -17,7 +19,7 @@ const verifyToken = (req, res, next) => {
   } catch (error) {
     return res.status(400).json({
       status: 400,
-      message: "Token no válido",
+      message: INVALID_TOKEN,
     });
   }
 };

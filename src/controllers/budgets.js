@@ -93,6 +93,14 @@ const budgetsController = {
     });
   },
   update: async (req, res) => {
+    if (!req.body.name || !req.body.expectedAmount) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+
     const { id } = req.params;
 
     const oldBudget = await budgetsService.getOne({ _id: id });

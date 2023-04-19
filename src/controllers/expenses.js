@@ -70,6 +70,14 @@ const expensesController = {
     });
   },
   update: async (req, res) => {
+    if (!req.body.name || !req.body.amount || !req.body.budget) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+
     const { id } = req.params;
 
     const oldExpense = await expensesService.getOne({ _id: id });

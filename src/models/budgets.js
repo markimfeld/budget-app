@@ -20,11 +20,11 @@ const budgetSchema = new Schema({
   createdAt: {
     type: Date,
     inmutable: true,
-    default: () => new Date(),
+    default: () => new Date().toLocaleDateString(),
   },
   updatedAt: {
     type: Date,
-    default: () => new Date(),
+    default: () => new Date().toLocaleDateString(),
   },
   deletedAt: {
     type: Date,

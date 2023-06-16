@@ -1,6 +1,8 @@
 import { userService } from "../services/users.js";
 import jwt from "jsonwebtoken";
 
+import transporter from "../helpers/mailer.js";
+
 import {
   NOT_FOUND,
   INVALID_CREDENTIALS,
@@ -56,6 +58,15 @@ const usersController = {
       username: user.username,
       accessToken: token,
     };
+
+    transporter
+      .sendMail({
+        from: "Finanzas App sebastianimfeld@gmail.com",
+        to: req.body.email,
+        subject: "Aviso de inicio de sesión",
+        body: "Iniciaste sesión ahora mismo",
+      })
+      .then((res) => console.log(res));
 
     return res.status(200).json({
       status: 200,

@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import { ACCESS_DENIED, INVALID_TOKEN } from "../labels/labels.js";
 
 const verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
+  console.log({ cookies: req.cookies });
+
+  // const token = req.header("Authorization");
+  const token = req.cookies.jwt;
 
   if (!token) {
     return res.status(401).json({

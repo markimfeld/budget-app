@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import colors from "colors";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
@@ -25,8 +26,8 @@ mongoose
 // app instance
 const app = express();
 
-// app.use(cors({ origin: ["http://localhost:3000"] }));
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
 
 // para capturar el body
 // json middleware

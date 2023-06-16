@@ -59,14 +59,16 @@ const usersController = {
       accessToken: token,
     };
 
-    transporter
-      .sendMail({
-        from: "Finanzas App sebastianimfeld@gmail.com",
-        to: req.body.email,
-        subject: "Aviso de inicio de sesión",
-        body: "Iniciaste sesión ahora mismo",
-      })
-      .then((res) => console.log(res));
+    // transporter
+    //   .sendMail({
+    //     from: "Finanzas App sebastianimfeld@gmail.com",
+    //     to: req.body.email,
+    //     subject: "Aviso de inicio de sesión",
+    //     body: "Iniciaste sesión ahora mismo",
+    //   })
+    //   .then((res) => console.log(res));
+
+    res.cookie("jwt", token);
 
     return res.status(200).json({
       status: 200,

@@ -56,7 +56,7 @@ const usersController = {
       firstName: user.firstName,
       lastName: user.lastName,
       username: user.username,
-      accessToken: token,
+      // accessToken: token,
     };
 
     // transporter

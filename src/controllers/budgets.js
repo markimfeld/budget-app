@@ -10,7 +10,8 @@ const budgetsController = {
       ? req.query.year
       : new Date().getFullYear();
 
-    const createdBy = req.query.createdBy;
+    // const createdBy = req.query.createdBy;
+    const createdBy = req.user.id;
 
     const budgets = await budgetsService.getAll({
       $expr: {

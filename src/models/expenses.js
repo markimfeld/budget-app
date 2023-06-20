@@ -34,6 +34,16 @@ const expenseSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  createdBy: {
+    type: SchemaTypes.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  updatedBy: {
+    type: SchemaTypes.ObjectId,
+    ref: "user",
+    required: true,
+  },
 });
 
 expenseSchema.pre("save", function (next) {

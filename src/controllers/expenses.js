@@ -5,7 +5,12 @@ import { NOT_FOUND, MISSING_FIELDS_REQUIRED } from "../labels/labels.js";
 const expensesController = {
   getAll: async (req, res) => {
     const expenses = await expensesService.getAll({
-      isDeleted: false,
+      $expr: {
+        $and: [
+          { $eq: ["$isDeleted", false] },
+          { $eq: ["$createdBy", req.user.id] },
+        ],
+      },
     });
 
     return res.status(200).json({
@@ -40,7 +45,11 @@ const expensesController = {
       });
     }
 
-    const newExpense = await expensesService.store(req.body);
+    const newExpenseToStore = { ...req.body };
+    newExpenseToStore.createdBy = req.user.id;
+    newExpenseToStore.updatedBy = req.user.id;
+
+    const newExpense = await expensesService.store(newExpenseToStore);
 
     return res.status(201).json({
       status: 201,

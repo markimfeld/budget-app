@@ -4,9 +4,14 @@ import { NOT_FOUND, MISSING_FIELDS_REQUIRED } from "../labels/labels.js";
 
 const expensesController = {
   getAll: async (req, res) => {
+    const currentMonth = new Date().getMonth() + 1;
+    const currentYear = new Date().getFullYear();
+
     const expenses = await expensesService.getAll({
       $expr: {
         $and: [
+          { $eq: [{ $year: "$createdAt" }, currentYear] },
+          { $eq: [{ $month: "$createdAt" }, currentMonth] },
           { $eq: ["$isDeleted", false] },
           { $eq: ["$createdBy", req.user.id] },
         ],

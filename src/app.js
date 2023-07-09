@@ -12,6 +12,7 @@ dotenv.config();
 import budgetsRouter from "./routes/budgets.js";
 import expensesRouter from "./routes/expenses.js";
 import usersRouter from "./routes/users.js";
+import incomesRouter from "./routes/incomes.js";
 
 // DB Connection
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5pqkwyp.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
@@ -39,6 +40,7 @@ app.use(morgan("tiny"));
 
 // route middleware
 app.use("/api/v1/budgets", budgetsRouter);
+app.use("/api/v1/incomes", incomesRouter);
 app.use("/api/v1/expenses", expensesRouter);
 app.use("/api/v1/users", usersRouter);
 

@@ -40,9 +40,7 @@ export const incomesService = {
     try {
       const income = await Income.findOne({ _id: id });
       income.name = newIncomeData?.name;
-      income.expectedAmount = newIncomeData?.expectedAmount;
-      income.leftAmount = newIncomeData?.leftAmount;
-      income.spentAmount = newIncomeData?.spentAmount;
+      income.amount = newIncomeData?.amount;
 
       return await income.save();
     } catch (error) {

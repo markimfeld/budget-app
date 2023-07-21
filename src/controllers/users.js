@@ -21,6 +21,21 @@ const usersController = {
       data: users,
     });
   },
+  getOne: async (req, res) => {
+    const user = await userService.getOne({ _id: req.body.id });
+
+    if (user === undefined || user === null) {
+      return res.status(404).json({
+        status: 404,
+        message: NOT_FOUND,
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      data: user,
+    });
+  },
   login: async (req, res) => {
     const user = await userService.getOne({ email: req.body.email });
 
@@ -114,6 +129,43 @@ const usersController = {
       status: 201,
       isStored: true,
       data: storedUser,
+    });
+  },
+  update: async (req, res) => {
+    if (
+      !req.body.firstName ||
+      !req.body.lastName ||
+      !req.body.username ||
+      !req.body.email
+    ) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+    const { id } = req.params;
+
+    const oldInforUser = await userService.getOne({ _id: id });
+
+    if (oldInforUser?.email !== req.body?.email) {
+      const alreadyExist = await userService.getOne({ email: req.body.email });
+
+      if (alreadyExist) {
+        return res.status(400).json({
+          status: 400,
+          isStored: false,
+          message: DUPLICATE_RECORD,
+        });
+      }
+    }
+
+    const updateUser = await userService.update(id, { ...req.body });
+
+    return res.status(201).json({
+      status: 201,
+      isUpdated: true,
+      data: updateUser !== 0 ? id : null,
     });
   },
 };

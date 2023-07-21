@@ -29,4 +29,19 @@ export const userService = {
       return error;
     }
   },
+  update: async (id, newUserData) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      user.firstName = newUserData?.firstName;
+      user.lastName = newUserData?.lastName;
+      user.email = newUserData?.email;
+      user.username = newUserData?.username;
+
+      const data = await User.updateOne({ _id: id }, newUserData);
+
+      return data.modifiedCount;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

@@ -31,12 +31,6 @@ export const userService = {
   },
   update: async (id, newUserData) => {
     try {
-      const user = await User.findOne({ _id: id });
-      user.firstName = newUserData?.firstName;
-      user.lastName = newUserData?.lastName;
-      user.email = newUserData?.email;
-      user.username = newUserData?.username;
-
       const data = await User.updateOne({ _id: id }, newUserData);
 
       return data.modifiedCount;

@@ -33,6 +33,12 @@ const userSchema = new Schema({
     min: 6,
     max: 1024,
   },
+  token: {
+    type: String,
+  },
+  resetToken: {
+    type: String,
+  },
   isDeleted: {
     type: Boolean,
     default: false,
@@ -40,11 +46,11 @@ const userSchema = new Schema({
   createdAt: {
     type: Date,
     inmutable: true,
-    default: () => Date.now(),
+    default: () => new Date().toLocaleDateString(),
   },
   updatedAt: {
     type: Date,
-    default: () => Date.now(),
+    default: () => new Date().toLocaleDateString(),
   },
   deletedAt: {
     type: Date,

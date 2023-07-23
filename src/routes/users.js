@@ -11,5 +11,7 @@ usersRouter.post("/profile", verifyToken, usersController.getOne);
 usersRouter.put("/profile/:id", verifyToken, usersController.update);
 usersRouter.post("/login", usersController.login);
 usersRouter.post("/register", usersController.store);
+usersRouter.put("/recovery-password", usersController.recoverPassword);
+usersRouter.put("/new-password", usersController.newPassword);
 
 export default usersRouter;

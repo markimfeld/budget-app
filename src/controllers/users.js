@@ -1,6 +1,6 @@
 import { userService } from "../services/users.js";
 import jwt from "jsonwebtoken";
-
+import bcrypt from "bcrypt";
 import transporter from "../helpers/mailer.js";
 
 import {
@@ -160,12 +160,118 @@ const usersController = {
       }
     }
 
-    const updateUser = await userService.update(id, { ...req.body });
+    const updateUser = await userService.update(id, {
+      ...req.body,
+      updatedAt: new Date(),
+    });
 
     return res.status(201).json({
       status: 201,
       isUpdated: true,
       data: updateUser !== 0 ? id : null,
+    });
+  },
+  recoverPassword: async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        status: 400,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+
+    const message =
+      "Revisa el enlace enviado a tu correo para reestablecer tu contraseña";
+
+    let verificationLink = `http://localhost:${process.env.PORT_FRONT}/recovery-password/`;
+    let emailStatus = "OK";
+
+    const anUser = await userService.getOne({ email });
+
+    if (!anUser) {
+      return res.json({ message });
+    }
+
+    // dos partes: payload y el secret token
+    // aca generamos el token
+    const token = jwt.sign(
+      {
+        name: anUser.firstName + " " + anUser.lastName,
+        id: anUser._id,
+      },
+      process.env.RESET_TOKEN_SECRET,
+      { expiresIn: "5m" }
+    );
+
+    const userToUpdate = { ...anUser._doc };
+    userToUpdate.resetToken = token;
+    userToUpdate.updatedAt = new Date();
+
+    await userService.update(anUser._id, userToUpdate);
+
+    try {
+      transporter
+        .sendMail({
+          from: `Finanzas App ${process.env.EMAIL_USER}`,
+          to: req.body.email,
+          subject: "Reestablecer contraseña",
+          html: `
+            <div>
+              <h4>Reestablecer contraseña</h4>
+              <p>Hace clic en el siguiente enlace para reestablecer la nueva contraseña</p>
+              <a href=${verificationLink}${token}>Reestablecer contraseña</a>
+            </div>
+          `,
+        })
+        .then((res) => console.log(res))
+        .catch((error) => console.log(error));
+
+      return res.status(200).json({ message, info: emailStatus });
+    } catch (error) {
+      return res.status(400).json({ message: "Algo salió mal!" });
+    }
+  },
+  newPassword: async (req, res) => {
+    if (!req.body.password || !req.body.confirmPassword || !req.body.token) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(401).json({
+        status: 401,
+        message: ACCESS_DENIED,
+      });
+    }
+
+    try {
+      const verified = jwt.verify(token, process.env.RESET_TOKEN_SECRET);
+    } catch (error) {
+      return res.status(400).json({
+        status: 400,
+        message: INVALID_TOKEN,
+      });
+    }
+
+    const user = await userService.getOne({ resetToken: token });
+
+    // encriptamos
+    const jumps = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.password, jumps);
+
+    const updateUser = await userService.update(user._id, {
+      password: hash,
+      updatedAt: new Date(),
+    });
+
+    return res.status(201).json({
+      status: 201,
+      isUpdated: true,
     });
   },
 };

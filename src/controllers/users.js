@@ -9,6 +9,7 @@ import {
   MISSING_FIELDS_REQUIRED,
   INVALID_PASSWORD_LENGTH,
   DUPLICATE_RECORD,
+  INVALID_TOKEN,
 } from "../labels/labels.js";
 
 const usersController = {

@@ -13,11 +13,11 @@ const incomeSchema = new Schema({
   createdAt: {
     type: Date,
     inmutable: true,
-    default: () => new Date().toLocaleDateString(),
+    default: () => new Date(),
   },
   updatedAt: {
     type: Date,
-    default: () => new Date().toLocaleDateString(),
+    default: () => new Date(),
   },
   deletedAt: {
     type: Date,

@@ -214,7 +214,7 @@ const usersController = {
     try {
       transporter
         .sendMail({
-          from: `Finanzas App ${process.env.EMAIL_USER}`,
+          from: `Finanzas Perfectas ${process.env.EMAIL_USER}`,
           to: req.body.email,
           subject: "Reestablecer contraseña",
           html: `

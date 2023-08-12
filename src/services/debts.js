@@ -3,7 +3,7 @@ import Debt from "../models/debts.js";
 export const debtService = {
   getAll: (options) => {
     try {
-      return Debt.find({ ...options });
+      return Debt.find({ ...options }).sort({ createdAt: -1 });
     } catch (error) {
       return error;
     }

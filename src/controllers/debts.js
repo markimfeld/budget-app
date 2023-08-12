@@ -47,11 +47,11 @@ const debtsController = {
     });
   },
   store: async (req, res) => {
-    console.log(req.body);
     if (
       !req.body.name ||
       !req.body.initialAmountInstallments ||
-      !req.body.leftAmountInstallments ||
+      (!req.body.leftAmountInstallments &&
+        req.body.leftAmountInstallments !== 0) ||
       !req.body.installmentAmount ||
       !req.body.startDate ||
       !req.body.endDate
@@ -66,6 +66,10 @@ const debtsController = {
     const debtToStore = { ...req.body };
     debtToStore.createdBy = req.user.id;
     debtToStore.updatedBy = req.user.id;
+
+    if (debtToStore.leftAmountInstallments === 0) {
+      debtToStore.status = true;
+    }
 
     const debtToStored = await debtService.store(debtToStore);
 

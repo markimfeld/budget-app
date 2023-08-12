@@ -99,36 +99,50 @@ const debtsController = {
     });
   },
   update: async (req, res) => {
-    // if (!req.body.name || !req.body.expectedAmount) {
-    //   return res.status(400).json({
-    //     status: 400,
-    //     isStored: false,
-    //     message: MISSING_FIELDS_REQUIRED,
-    //   });
-    // }
+    if (
+      !req.body.name ||
+      !req.body.initialAmountInstallments ||
+      (!req.body.leftAmountInstallments &&
+        req.body.leftAmountInstallments !== 0) ||
+      !req.body.installmentAmount ||
+      !req.body.startDate ||
+      !req.body.endDate
+    ) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
 
-    // const { id } = req.params;
+    const { id } = req.params;
 
-    // const oldBudget = await budgetsService.getOne({ _id: id });
+    const oldDebt = await debtService.getOne({ _id: id });
 
-    // if (!oldBudget) {
-    //   return res.status(404).json({
-    //     status: 404,
-    //     isUpdated: false,
-    //     message: NOT_FOUND,
-    //   });
-    // }
+    if (!oldDebt) {
+      return res.status(404).json({
+        status: 404,
+        isUpdated: false,
+        message: NOT_FOUND,
+      });
+    }
 
-    // const newBudgetData = { ...oldBudget._doc, ...req.body };
+    let newDebtData = { ...oldDebt._doc, ...req.body };
+    console.log(newDebtData);
 
-    // const budgetUpdated = await budgetsService.update(id, newBudgetData);
+    if (newDebtData.leftAmountInstallments === 0) {
+      newDebtData.status = true;
+    } else {
+      newDebtData.status = false;
+    }
 
-    // return res.status(200).json({
-    //   status: 200,
-    //   isUpdated: true,
-    //   data: budgetUpdated,
-    // });
-    return res.status(200).json({ message: "updating" });
+    const debtUpdated = await debtService.update(id, newDebtData);
+
+    return res.status(200).json({
+      status: 200,
+      isUpdated: true,
+      data: debtUpdated,
+    });
   },
 };
 

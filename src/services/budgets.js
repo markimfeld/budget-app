@@ -3,7 +3,7 @@ import Budget from "../models/budgets.js";
 export const budgetsService = {
   getAll: (options) => {
     try {
-      return Budget.find({ ...options });
+      return Budget.find({ ...options }).sort({ createdAt: -1 });
     } catch (error) {
       return error;
     }

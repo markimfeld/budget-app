@@ -52,4 +52,31 @@ export const debtService = {
       return error;
     }
   },
+  updateMany: async (debtIds) => {
+    try {
+      const res = await Debt.find({
+        _id: { $in: debtIds },
+        status: { $eq: false },
+        leftAmountInstallments: { $gt: 0 },
+      });
+
+      const debts = res.map((debt) => {
+        debt.leftAmountInstallments = debt.leftAmountInstallments - 1;
+        if (debt.leftAmountInstallments === 0) {
+          debt.status = true;
+        }
+        return debt;
+      });
+
+      let data = undefined;
+
+      if (debts.length > 0) {
+        data = await Debt.bulkSave(debts);
+      }
+
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
 };

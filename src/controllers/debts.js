@@ -144,6 +144,25 @@ const debtsController = {
       data: debtUpdated,
     });
   },
+  updateMany: async (req, res) => {
+    if (!req.body.debts && req.body.debts.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        isStored: false,
+        message: MISSING_FIELDS_REQUIRED,
+      });
+    }
+
+    const debtsId = req.body.debts.map((debt) => debt._id);
+
+    const data = await debtService.updateMany(debtsId);
+
+    return res.status(200).json({
+      status: 200,
+      isUpdated: true,
+      data,
+    });
+  },
 };
 
 export default debtsController;

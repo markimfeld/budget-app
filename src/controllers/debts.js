@@ -19,6 +19,8 @@ const debtsController = {
           { $eq: [{ $month: "$createdAt" }, currentMonth] },
           { $eq: ["$isDeleted", false] },
           { $eq: ["$createdBy", createdBy] },
+          { $gt: ["$leftAmountInstallments", 0] },
+          { $eq: ["$status", false] },
         ],
       },
     });

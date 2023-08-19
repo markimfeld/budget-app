@@ -18,6 +18,9 @@ debtsRouter.post("/", verifyToken, debtsController.store);
 // PUT - http://localhost:3000/api/v1/debts/:id
 debtsRouter.put("/:id", verifyToken, debtsController.update);
 
+// PUT - http://localhost:3000/api/v1/debts/
+debtsRouter.put("/", verifyToken, debtsController.updateMany);
+
 // DELETE - http://localhost:3000/api/v1/debts/:id
 debtsRouter.delete("/:id", verifyToken, debtsController.delete);
 

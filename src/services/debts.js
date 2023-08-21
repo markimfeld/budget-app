@@ -45,7 +45,7 @@ export const debtService = {
       debt.installmentAmount = newDebtData?.installmentAmount;
       debt.startDate = newDebtData?.startDate;
       debt.endDate = newDebtData?.endDate;
-      debt.status = newDebtData?.status;
+      debt.isPaid = newDebtData?.isPaid;
 
       return await debt.save();
     } catch (error) {
@@ -56,14 +56,14 @@ export const debtService = {
     try {
       const res = await Debt.find({
         _id: { $in: debtIds },
-        status: { $eq: false },
+        isPaid: { $eq: false },
         leftAmountInstallments: { $gt: 0 },
       });
 
       const debts = res.map((debt) => {
         debt.leftAmountInstallments = debt.leftAmountInstallments - 1;
         if (debt.leftAmountInstallments === 0) {
-          debt.status = true;
+          debt.isPaid = true;
         }
         return debt;
       });

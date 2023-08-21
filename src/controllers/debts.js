@@ -10,6 +10,8 @@ const debtsController = {
       ? req.query.year
       : new Date().getFullYear();
 
+    const isPaid = req.query.isPaid ? req.query.isPaid : false;
+
     const createdBy = req.user.id;
 
     const debts = await debtService.getAll({
@@ -19,8 +21,7 @@ const debtsController = {
           { $eq: [{ $month: "$createdAt" }, currentMonth] },
           { $eq: ["$isDeleted", false] },
           { $eq: ["$createdBy", createdBy] },
-          { $gt: ["$leftAmountInstallments", 0] },
-          { $eq: ["$status", false] },
+          { $eq: ["$isPaid", isPaid] },
         ],
       },
     });
@@ -70,7 +71,7 @@ const debtsController = {
     debtToStore.updatedBy = req.user.id;
 
     if (debtToStore.leftAmountInstallments === 0) {
-      debtToStore.status = true;
+      debtToStore.isPaid = true;
     }
 
     const debtToStored = await debtService.store(debtToStore);
@@ -130,12 +131,11 @@ const debtsController = {
     }
 
     let newDebtData = { ...oldDebt._doc, ...req.body };
-    console.log(newDebtData);
 
     if (newDebtData.leftAmountInstallments === 0) {
-      newDebtData.status = true;
+      newDebtData.isPaid = true;
     } else {
-      newDebtData.status = false;
+      newDebtData.isPaid = false;
     }
 
     const debtUpdated = await debtService.update(id, newDebtData);

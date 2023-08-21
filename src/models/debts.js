@@ -30,7 +30,7 @@ const debtSchema = new Schema({
     required: true,
     // default: () => new Date(),
   },
-  status: {
+  isPaid: {
     type: Boolean,
     required: true,
     default: false,

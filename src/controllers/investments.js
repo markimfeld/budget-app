@@ -3,20 +3,11 @@ import { MISSING_FIELDS_REQUIRED, NOT_FOUND } from "../labels/labels.js";
 
 const investmentsController = {
   getAll: async (req, res) => {
-    const currentMonth = req.query.month
-      ? req.query.month
-      : new Date().getMonth() + 1;
-    const currentYear = req.query.year
-      ? req.query.year
-      : new Date().getFullYear();
-
     const createdBy = req.user.id;
 
     const investments = await investmentService.getAll({
       $expr: {
         $and: [
-          { $eq: [{ $year: "$createdAt" }, currentYear] },
-          { $eq: [{ $month: "$createdAt" }, currentMonth] },
           { $eq: ["$isDeleted", false] },
           { $eq: ["$createdBy", createdBy] },
         ],

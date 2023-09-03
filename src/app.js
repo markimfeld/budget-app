@@ -15,6 +15,7 @@ import usersRouter from "./routes/users.js";
 import incomesRouter from "./routes/incomes.js";
 import debtsRouter from "./routes/debts.js";
 import investmentsRouter from "./routes/investments.js";
+import currenciesRouter from "./routes/currencies.js";
 
 // DB Connection
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5pqkwyp.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
@@ -47,6 +48,7 @@ app.use("/api/v1/expenses", expensesRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/debts", debtsRouter);
 app.use("/api/v1/investments", investmentsRouter);
+app.use("/api/v1/currencies", currenciesRouter);
 
 // app server listening
 const PORT = process.env.PORT || 3000;

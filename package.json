@@ -2,10 +2,11 @@
   "name": "budget-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "mocha --timeout 10000",
-    "dev": "nodemon .\\src\\app.js"
+    "dev": "nodemon .\\src\\app.js",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",

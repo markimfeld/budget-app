@@ -84,7 +84,11 @@ const usersController = {
     //   })
     //   .then((res) => console.log(res));
 
-    res.cookie("jwt", token, { httpOnly: true, sameSite: "lax" });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
 
     return res.status(200).json({
       status: 200,

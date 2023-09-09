@@ -32,8 +32,23 @@ const app = express();
 
 app.use(cookieParser());
 app.use(
-  cors({ origin: ["https://budget-app-rouge.vercel.app/"], credentials: true })
+  cors({ origin: ["https://budget-app-rouge.vercel.app"], credentials: true })
 );
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       const ACCEPTED_ORIGINS = ["https://budget-app-rouge.vercel.app"];
+
+//       if (ACCEPTED_ORIGINS.includes(origin)) {
+//         return callback(null, true);
+//       }
+
+//       if (!origin) {
+//         return callback(null, true);
+//       }
+//     },
+//   })
+// );
 
 // para capturar el body
 // json middleware

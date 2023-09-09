@@ -189,7 +189,7 @@ const usersController = {
     const message =
       "Revisa el enlace enviado a tu correo para reestablecer tu contraseña";
 
-    let verificationLink = `http://localhost:${process.env.PORT_FRONT}/recovery-password/`;
+    let verificationLink = `https://budget-app-rouge.vercel.app/recovery-password/`;
     let emailStatus = "OK";
 
     const anUser = await userService.getOne({ email });

@@ -31,7 +31,9 @@ mongoose
 const app = express();
 
 app.use(cookieParser());
-app.use(cors({ origin: [`${process.env.BASE_URL_FRONT}`], credentials: true }));
+app.use(
+  cors({ origin: [`https://budget-app-rouge.vercel.app`], credentials: true })
+);
 // app.use(
 //   cors({
 //     origin: (origin, callback) => {
